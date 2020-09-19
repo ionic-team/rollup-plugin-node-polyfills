@@ -16,7 +16,8 @@ const files = [
   'string-decoder.js',
   'zlib.js',
   'domain.js',
-  'crypto.js'
+  'crypto.js',
+  'buffer.js'
 ];
 
 describe('rollup-plugin-node-polyfills', () => {

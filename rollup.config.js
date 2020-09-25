@@ -4,7 +4,7 @@ export default {
 	external: [
 		'path',
 		'crypto',
-		'rollup-plugin-inject'
+		'@rollup/plugin-inject'
 	],
 	output: [
 		{

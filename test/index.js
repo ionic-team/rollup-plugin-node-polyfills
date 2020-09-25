@@ -19,7 +19,7 @@ const files = [
   'crypto.js'
 ];
 
-describe('rollup-plugin-node-polyfills', () => {
+describe('@rollup/plugin-node-polyfills', () => {
   files.forEach((file) => {
     it('works with ' + file, function (done) {
       rollup.rollup({

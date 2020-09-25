@@ -60,7 +60,7 @@ Not all included modules rollup equally, streams (and by extension anything that
 config for using this with something simple like events or querystring
 
 ```js
-import nodePolyfills from 'rollup-plugin-node-polyfills';
+import nodePolyfills from '@rollup/plugin-node-polyfills';
 rollup({
   entry: 'main.js',
   plugins: [
@@ -81,7 +81,7 @@ import {inherits} from 'util';
 Config for something more complicated like http
 
 ```js
-import nodePolyfills from 'rollup-plugin-node-polyfills';
+import nodePolyfills from '@rollup/plugin-node-polyfills';
 rollup({
   entry: 'main.js',
   plugins: [

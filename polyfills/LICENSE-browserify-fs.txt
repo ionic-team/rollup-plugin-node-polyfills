@@ -50,13 +50,13 @@ Repository: undefined
 
 ---
 
-Name: rollup-plugin-node-resolve
+Name: @rollup/plugin-node-resolve
 Version: 5.0.1
 License: MIT
 Private: false
 Description: Bundle third-party dependencies in node_modules
 Repository: undefined
-Homepage: https://github.com/rollup/rollup-plugin-node-resolve#readme
+Homepage: https://github.com/rollup/@rollup/plugin-node-resolve#readme
 Author: Rich Harris <richard.a.harris@gmail.com>
 
 ---

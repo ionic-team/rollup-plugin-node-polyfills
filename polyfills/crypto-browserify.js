@@ -1756,6 +1756,7 @@ var algorithms = {
 };
 
 var algorithms$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
 	sha224WithRSAEncryption: sha224WithRSAEncryption,
 	sha256WithRSAEncryption: sha256WithRSAEncryption,
 	sha384WithRSAEncryption: sha384WithRSAEncryption,
@@ -3178,6 +3179,7 @@ var list = {
 };
 
 var list$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
 	aes128: aes128,
 	aes192: aes192,
 	aes256: aes256,
@@ -7514,7 +7516,7 @@ var bn = createCommonjsModule(function (module) {
     var res = this.imod(a._invmp(this.m).mul(this.r2));
     return res._forceRed(this);
   };
-})(module, commonjsGlobal);
+})( module, commonjsGlobal);
 });
 
 var r;
@@ -7846,6 +7848,7 @@ var primes$1 = {
 };
 
 var primes$2 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
 	modp1: modp1,
 	modp2: modp2,
 	modp5: modp5,
@@ -8162,9 +8165,6 @@ var dependencies = {
 	"minimalistic-assert": "^1.0.0",
 	"minimalistic-crypto-utils": "^1.0.0"
 };
-var _resolved = "https://registry.npmjs.org/elliptic/-/elliptic-6.4.1.tgz";
-var _integrity = "sha512-BsXLz5sqX8OHcsh7CqBMztyXARmGQ3LWPtGjJi6DiJHq5C/qvi9P3OqgswKSDftbu8+IoI/QDTAm2fFnQ9SZSQ==";
-var _from = "elliptic@6.4.1";
 var _package = {
 	name: name,
 	version: version,
@@ -8179,13 +8179,11 @@ var _package = {
 	bugs: bugs,
 	homepage: homepage,
 	devDependencies: devDependencies,
-	dependencies: dependencies,
-	_resolved: _resolved,
-	_integrity: _integrity,
-	_from: _from
+	dependencies: dependencies
 };
 
 var _package$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
 	name: name,
 	version: version,
 	description: description,
@@ -8200,9 +8198,6 @@ var _package$1 = /*#__PURE__*/Object.freeze({
 	homepage: homepage,
 	devDependencies: devDependencies,
 	dependencies: dependencies,
-	_resolved: _resolved,
-	_integrity: _integrity,
-	_from: _from,
 	'default': _package
 });
 
@@ -15347,6 +15342,7 @@ var aesid = {
 };
 
 var aesid$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
 	'default': aesid
 });
 
@@ -15428,7 +15424,6 @@ function parseKeys (buffer) {
           }
         default: throw new Error('unknown key id ' + subtype)
       }
-      throw new Error('unknown key type ' + type)
     case 'ENCRYPTED PRIVATE KEY':
       data = asn1_1$1.EncryptedPrivateKey.decode(data, 'der');
       data = decrypt$2(data, password);
@@ -15452,7 +15447,6 @@ function parseKeys (buffer) {
           }
         default: throw new Error('unknown key id ' + subtype)
       }
-      throw new Error('unknown key type ' + type)
     case 'RSA PUBLIC KEY':
       return asn1_1$1.RSAPublicKey.decode(data, 'der')
     case 'RSA PRIVATE KEY':
@@ -15497,6 +15491,7 @@ var curves = {
 };
 
 var curves$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
 	'default': curves
 });
 

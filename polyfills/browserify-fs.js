@@ -28,7 +28,7 @@ var idbstore = createCommonjsModule(function (module) {
 
 (function (name, definition, global) {
 
-    if (module.exports) {
+    if ( module.exports) {
         module.exports = definition();
     } else {
         global[name] = definition();
@@ -2459,7 +2459,7 @@ var prr = createCommonjsModule(function (module) {
   */
 
 (function (name, context, definition) {
-  if (module.exports)
+  if ( module.exports)
     module.exports = definition();
   else
     context[name] = definition();
@@ -2572,7 +2572,7 @@ var prr$1 = createCommonjsModule(function (module) {
   */
 
 (function (name, context, definition) {
-  if (module.exports)
+  if ( module.exports)
     module.exports = definition();
   else
     context[name] = definition();
@@ -5218,9 +5218,6 @@ var scripts = {
 	alltests: "npm test && npm run-script functionaltests"
 };
 var license = "MIT";
-var _resolved = "https://registry.npmjs.org/levelup/-/levelup-0.18.6.tgz";
-var _integrity = "sha1-5qAcsIlhbI7MApHCqb0/DETj5es=";
-var _from = "levelup@0.18.6";
 var _package = {
 	name: name,
 	description: description,
@@ -5234,13 +5231,11 @@ var _package = {
 	devDependencies: devDependencies,
 	browser: browser,
 	scripts: scripts,
-	license: license,
-	_resolved: _resolved,
-	_integrity: _integrity,
-	_from: _from
+	license: license
 };
 
 var _package$1 = /*#__PURE__*/Object.freeze({
+	__proto__: null,
 	name: name,
 	description: description,
 	version: version,
@@ -5254,9 +5249,6 @@ var _package$1 = /*#__PURE__*/Object.freeze({
 	browser: browser,
 	scripts: scripts,
 	license: license,
-	_resolved: _resolved,
-	_integrity: _integrity,
-	_from: _from,
 	'default': _package
 });
 

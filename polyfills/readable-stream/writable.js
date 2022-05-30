@@ -7,7 +7,6 @@ import {inherits, deprecate} from 'util';
 import {Buffer} from 'buffer';
 Writable.WritableState = WritableState;
 import {EventEmitter} from 'events';
-import {Duplex} from './duplex';
 import {nextTick} from 'process';
 inherits(Writable, EventEmitter);
 
@@ -20,7 +19,7 @@ function WriteReq(chunk, encoding, cb) {
   this.next = null;
 }
 
-function WritableState(options, stream) {
+function WritableState(options, stream, isDuplex) {
   Object.defineProperty(this, 'buffer', {
     get: deprecate(function () {
       return this.getBuffer();
@@ -32,7 +31,7 @@ function WritableState(options, stream) {
   // contains buffers or objects.
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
+  if (isDuplex) this.objectMode = this.objectMode || !!options.writableObjectMode;
 
   // the point at which write() starts returning false
   // Note: 0 is a valid value, means that we always return false if
@@ -129,13 +128,13 @@ WritableState.prototype.getBuffer = function writableStateGetBuffer() {
 };
 
 export default Writable;
-export function Writable(options) {
+export function Writable(options, isDuplex) {
 
   // Writable ctor is applied to Duplexes, though they're not
   // instanceof Writable, they're instanceof Readable.
-  if (!(this instanceof Writable) && !(this instanceof Duplex)) return new Writable(options);
+  if (!(this instanceof Writable) && !isDuplex) return new Writable(options);
 
-  this._writableState = new WritableState(options, this);
+  this._writableState = new WritableState(options, this, isDuplex);
 
   // legacy.
   this.writable = true;

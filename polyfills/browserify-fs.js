@@ -3463,7 +3463,7 @@ var StringDecoder;
 
 util.inherits(Readable, stream);
 
-function ReadableState(options, stream) {
+function ReadableState(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which it stops calling _read() to fill the buffer
@@ -3531,11 +3531,11 @@ function ReadableState(options, stream) {
   }
 }
 
-function Readable(options) {
+function Readable(options, isDuplex) {
   if (!(this instanceof Readable))
     return new Readable(options);
 
-  this._readableState = new ReadableState(options, this);
+  this._readableState = new ReadableState(options, this, isDuplex);
 
   // legacy
   this.readable = true;
@@ -4448,8 +4448,8 @@ function Duplex(options) {
   if (!(this instanceof Duplex))
     return new Duplex(options);
 
-  _stream_readable.call(this, options);
-  _stream_writable.call(this, options);
+  _stream_readable.call(this, options, true);
+  _stream_writable.call(this, options, true);
 
   if (options && options.readable === false)
     this.readable = false;
@@ -4531,7 +4531,7 @@ function WriteReq(chunk, encoding, cb) {
   this.callback = cb;
 }
 
-function WritableState(options, stream) {
+function WritableState(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which write() starts returning false
@@ -4602,15 +4602,13 @@ function WritableState(options, stream) {
   this.errorEmitted = false;
 }
 
-function Writable(options) {
-  var Duplex = _stream_duplex;
-
+function Writable(options, isDuplex) {
   // Writable ctor is applied to Duplexes, though they're not
   // instanceof Writable, they're instanceof Readable.
-  if (!(this instanceof Writable) && !(this instanceof Duplex))
+  if (!(this instanceof Writable) && !isDuplex)
     return new Writable(options);
 
-  this._writableState = new WritableState(options, this);
+  this._writableState = new WritableState(options, this, isDuplex);
 
   // legacy.
   this.writable = true;
@@ -5853,7 +5851,7 @@ var StringDecoder$1;
 
 util.inherits(Readable$2, stream);
 
-function ReadableState$1(options, stream) {
+function ReadableState$1(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which it stops calling _read() to fill the buffer
@@ -5921,11 +5919,11 @@ function ReadableState$1(options, stream) {
   }
 }
 
-function Readable$2(options) {
+function Readable$2(options, isDuplex) {
   if (!(this instanceof Readable$2))
     return new Readable$2(options);
 
-  this._readableState = new ReadableState$1(options, this);
+  this._readableState = new ReadableState$1(options, this, isDuplex);
 
   // legacy
   this.readable = true;
@@ -6838,8 +6836,8 @@ function Duplex$1(options) {
   if (!(this instanceof Duplex$1))
     return new Duplex$1(options);
 
-  _stream_readable$1.call(this, options);
-  _stream_writable$1.call(this, options);
+  _stream_readable$1.call(this, options, true);
+  _stream_writable$1.call(this, options, true);
 
   if (options && options.readable === false)
     this.readable = false;
@@ -6921,7 +6919,7 @@ function WriteReq$1(chunk, encoding, cb) {
   this.callback = cb;
 }
 
-function WritableState$1(options, stream) {
+function WritableState$1(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which write() starts returning false
@@ -6992,15 +6990,13 @@ function WritableState$1(options, stream) {
   this.errorEmitted = false;
 }
 
-function Writable$1(options) {
-  var Duplex = _stream_duplex$1;
-
+function Writable$1(options, isDuplex) {
   // Writable ctor is applied to Duplexes, though they're not
   // instanceof Writable, they're instanceof Readable.
-  if (!(this instanceof Writable$1) && !(this instanceof Duplex))
+  if (!(this instanceof Writable$1) && !isDuplex)
     return new Writable$1(options);
 
-  this._writableState = new WritableState$1(options, this);
+  this._writableState = new WritableState$1(options, this, isDuplex);
 
   // legacy.
   this.writable = true;
@@ -8718,7 +8714,7 @@ var StringDecoder$2;
 
 util.inherits(Readable$3, stream);
 
-function ReadableState$2(options, stream) {
+function ReadableState$2(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which it stops calling _read() to fill the buffer
@@ -8786,11 +8782,11 @@ function ReadableState$2(options, stream) {
   }
 }
 
-function Readable$3(options) {
+function Readable$3(options, isDuplex) {
   if (!(this instanceof Readable$3))
     return new Readable$3(options);
 
-  this._readableState = new ReadableState$2(options, this);
+  this._readableState = new ReadableState$2(options, this, isDuplex);
 
   // legacy
   this.readable = true;
@@ -9703,8 +9699,8 @@ function Duplex$2(options) {
   if (!(this instanceof Duplex$2))
     return new Duplex$2(options);
 
-  _stream_readable$2.call(this, options);
-  _stream_writable$2.call(this, options);
+  _stream_readable$2.call(this, options, true);
+  _stream_writable$2.call(this, options, true);
 
   if (options && options.readable === false)
     this.readable = false;
@@ -9786,7 +9782,7 @@ function WriteReq$2(chunk, encoding, cb) {
   this.callback = cb;
 }
 
-function WritableState$2(options, stream) {
+function WritableState$2(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which write() starts returning false
@@ -9857,15 +9853,13 @@ function WritableState$2(options, stream) {
   this.errorEmitted = false;
 }
 
-function Writable$2(options) {
-  var Duplex = _stream_duplex$2;
-
+function Writable$2(options, isDuplex) {
   // Writable ctor is applied to Duplexes, though they're not
   // instanceof Writable, they're instanceof Readable.
-  if (!(this instanceof Writable$2) && !(this instanceof Duplex))
+  if (!(this instanceof Writable$2) && !iDuplex)
     return new Writable$2(options);
 
-  this._writableState = new WritableState$2(options, this);
+  this._writableState = new WritableState$2(options, this, isDuplex);
 
   // legacy.
   this.writable = true;
@@ -12481,9 +12475,7 @@ if (debug && debug.debuglog) {
 
 util.inherits(Readable$4, stream);
 
-function ReadableState$3(options, stream) {
-  var Duplex = _stream_duplex$3;
-
+function ReadableState$3(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which it stops calling _read() to fill the buffer
@@ -12521,7 +12513,7 @@ function ReadableState$3(options, stream) {
   // make all the buffer merging and length checks go away
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex)
+  if (isDuplex)
     this.objectMode = this.objectMode || !!options.readableObjectMode;
 
   // Crypto is kind of old and crusty.  Historically, its default string
@@ -12549,12 +12541,12 @@ function ReadableState$3(options, stream) {
   }
 }
 
-function Readable$4(options) {
+function Readable$4(options, isDuplex) {
 
   if (!(this instanceof Readable$4))
     return new Readable$4(options);
 
-  this._readableState = new ReadableState$3(options, this);
+  this._readableState = new ReadableState$3(options, this, isDuplex);
 
   // legacy
   this.readable = true;
@@ -13424,8 +13416,8 @@ function Duplex$3(options) {
   if (!(this instanceof Duplex$3))
     return new Duplex$3(options);
 
-  _stream_readable$3.call(this, options);
-  _stream_writable$3.call(this, options);
+  _stream_readable$3.call(this, options, true);
+  _stream_writable$3.call(this, options, true);
 
   if (options && options.readable === false)
     this.readable = false;
@@ -13507,9 +13499,7 @@ function WriteReq$3(chunk, encoding, cb) {
   this.callback = cb;
 }
 
-function WritableState$3(options, stream) {
-  var Duplex = _stream_duplex$3;
-
+function WritableState$3(options, stream, isDuplex) {
   options = options || {};
 
   // the point at which write() starts returning false
@@ -13523,7 +13513,7 @@ function WritableState$3(options, stream) {
   // contains buffers or objects.
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex)
+  if (isDuplex)
     this.objectMode = this.objectMode || !!options.writableObjectMode;
 
   // cast to ints.
@@ -13595,15 +13585,13 @@ function WritableState$3(options, stream) {
   this.errorEmitted = false;
 }
 
-function Writable$3(options) {
-  var Duplex = _stream_duplex$3;
-
+function Writable$3(options, isDuplex) {
   // Writable ctor is applied to Duplexes, though they're not
   // instanceof Writable, they're instanceof Readable.
-  if (!(this instanceof Writable$3) && !(this instanceof Duplex))
+  if (!(this instanceof Writable$3) && !iDuplex)
     return new Writable$3(options);
 
-  this._writableState = new WritableState$3(options, this);
+  this._writableState = new WritableState$3(options, this, isDuplex);
 
   // legacy.
   this.writable = true;
@@ -15196,17 +15184,8 @@ util.inherits(Writable$4, streamBrowser);
 
 function nop() {}
 
-function WritableState$4(options, stream) {
-  Duplex$4 = Duplex$4 || _stream_duplex$4;
-
+function WritableState$4(options, stream, isDuplex) {
   options = options || {};
-
-  // Duplex streams are both readable and writable, but share
-  // the same options object.
-  // However, some cases require setting options to different
-  // values for the readable and the writable sides of the duplex stream.
-  // These options can be provided separately as readableXXX and writableXXX.
-  var isDuplex = stream instanceof Duplex$4;
 
   // object stream flag to indicate whether or not this stream
   // contains buffers or objects.
@@ -15346,9 +15325,7 @@ if (typeof Symbol === 'function' && Symbol.hasInstance && typeof Function.protot
   };
 }
 
-function Writable$4(options) {
-  Duplex$4 = Duplex$4 || _stream_duplex$4;
-
+function Writable$4(options, isDuplex) {
   // Writable ctor is applied to Duplexes, too.
   // `realHasInstance` is necessary because using plain `instanceof`
   // would return false, as no `_writableState` property is attached.
@@ -15356,11 +15333,11 @@ function Writable$4(options) {
   // Trying to use the custom `instanceof` for Writable here will also break the
   // Node.js LazyTransform implementation, which has a non-trivial getter for
   // `_writableState` that would lead to infinite recursion.
-  if (!realHasInstance.call(Writable$4, this) && !(this instanceof Duplex$4)) {
+  if (!realHasInstance.call(Writable$4, this) && !isDuplex$4) {
     return new Writable$4(options);
   }
 
-  this._writableState = new WritableState$4(options, this);
+  this._writableState = new WritableState$4(options, this, isDuplex);
 
   // legacy.
   this.writable = true;
@@ -15823,8 +15800,8 @@ util.inherits(Duplex$5, _stream_readable$4);
 function Duplex$5(options) {
   if (!(this instanceof Duplex$5)) return new Duplex$5(options);
 
-  _stream_readable$4.call(this, options);
-  _stream_writable$4.call(this, options);
+  _stream_readable$4.call(this, options, true);
+  _stream_writable$4.call(this, options, true);
 
   if (options && options.readable === false) this.readable = false;
 
@@ -16243,17 +16220,8 @@ function prependListener(emitter, event, fn) {
   if (!emitter._events || !emitter._events[event]) emitter.on(event, fn);else if (isarray$4(emitter._events[event])) emitter._events[event].unshift(fn);else emitter._events[event] = [fn, emitter._events[event]];
 }
 
-function ReadableState$4(options, stream) {
-  Duplex$6 = Duplex$6 || _stream_duplex$4;
-
+function ReadableState$4(options, stream, isDuplex) {
   options = options || {};
-
-  // Duplex streams are both readable and writable, but share
-  // the same options object.
-  // However, some cases require setting options to different
-  // values for the readable and the writable sides of the duplex stream.
-  // These options can be provided separately as readableXXX and writableXXX.
-  var isDuplex = stream instanceof Duplex$6;
 
   // object stream flag. Used to make read(n) ignore n and to
   // make all the buffer merging and length checks go away
@@ -16320,12 +16288,10 @@ function ReadableState$4(options, stream) {
   }
 }
 
-function Readable$5(options) {
-  Duplex$6 = Duplex$6 || _stream_duplex$4;
-
+function Readable$5(options, isDuplex) {
   if (!(this instanceof Readable$5)) return new Readable$5(options);
 
-  this._readableState = new ReadableState$4(options, this);
+  this._readableState = new ReadableState$4(options, this, isDuplex);
 
   // legacy
   this.readable = true;

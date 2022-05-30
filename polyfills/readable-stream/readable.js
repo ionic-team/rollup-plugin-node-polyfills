@@ -6,7 +6,6 @@ import EventEmitter from 'events';
 import {inherits, debuglog} from 'util';
 import BufferList from './buffer-list';
 import {StringDecoder} from 'string_decoder';
-import {Duplex} from './duplex';
 import {nextTick} from 'process';
 
 var debug = debuglog('stream');
@@ -33,7 +32,7 @@ function prependListener(emitter, event, fn) {
 function listenerCount (emitter, type) {
   return emitter.listeners(type).length;
 }
-function ReadableState(options, stream) {
+function ReadableState(options, stream, isDuplex) {
 
   options = options || {};
 
@@ -41,7 +40,7 @@ function ReadableState(options, stream) {
   // make all the buffer merging and length checks go away
   this.objectMode = !!options.objectMode;
 
-  if (stream instanceof Duplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
+  if (isDuplex) this.objectMode = this.objectMode || !!options.readableObjectMode;
 
   // the point at which it stops calling _read() to fill the buffer
   // Note: 0 is a valid value, means "don't call _read preemptively ever"
@@ -100,11 +99,11 @@ function ReadableState(options, stream) {
   }
 }
 export default Readable;
-export function Readable(options) {
+export function Readable(options, isDuplex) {
 
   if (!(this instanceof Readable)) return new Readable(options);
 
-  this._readableState = new ReadableState(options, this);
+  this._readableState = new ReadableState(options, this, isDuplex);
 
   // legacy
   this.readable = true;

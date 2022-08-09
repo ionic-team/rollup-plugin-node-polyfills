@@ -8,9 +8,12 @@ var domain;
 function EventHandlers() {}
 EventHandlers.prototype = Object.create(null);
 
-module.exports = function EventEmitter() {
+export function EventEmitter() {
   EventEmitter.init.call(this);
 }
+
+module.exports = EventEmitter
+
 export default EventEmitter;
 
 // nodejs oddity

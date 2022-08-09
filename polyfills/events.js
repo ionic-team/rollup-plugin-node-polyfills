@@ -8,7 +8,7 @@ var domain;
 function EventHandlers() {}
 EventHandlers.prototype = Object.create(null);
 
-export function EventEmitter() {
+module.exports = function EventEmitter() {
   EventEmitter.init.call(this);
 }
 export default EventEmitter;

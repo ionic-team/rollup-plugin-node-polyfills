@@ -12,8 +12,6 @@ export function EventEmitter() {
   EventEmitter.init.call(this);
 }
 
-module.exports = EventEmitter
-
 export default EventEmitter;
 
 // nodejs oddity

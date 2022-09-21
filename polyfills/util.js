@@ -32,7 +32,7 @@ export function format(f) {
   var i = 1;
   var args = arguments;
   var len = args.length;
-  var str = String(f).replace(formatRegExp, function(x) {
+  var str = String(f).replace(formatRegExp, function (x) {
     if (x === '%%') return '%';
     if (i >= len) return x;
     switch (x) {
@@ -65,7 +65,7 @@ export function format(f) {
 export function deprecate(fn, msg) {
   // Allow for deprecating things in the process of starting up.
   if (isUndefined(global.process)) {
-    return function() {
+    return function () {
       return deprecate(fn, msg).apply(this, arguments);
     };
   }
@@ -102,12 +102,12 @@ export function debuglog(set) {
   if (!debugs[set]) {
     if (new RegExp('\\b' + set + '\\b', 'i').test(debugEnviron)) {
       var pid = 0;
-      debugs[set] = function() {
+      debugs[set] = function () {
         var msg = format.apply(null, arguments);
         console.error('%s %d: %s', set, pid, msg);
       };
     } else {
-      debugs[set] = function() {};
+      debugs[set] = function () { };
     }
   }
   return debugs[set];
@@ -149,19 +149,19 @@ export function inspect(obj, opts) {
 
 // http://en.wikipedia.org/wiki/ANSI_escape_code#graphics
 inspect.colors = {
-  'bold' : [1, 22],
-  'italic' : [3, 23],
-  'underline' : [4, 24],
-  'inverse' : [7, 27],
-  'white' : [37, 39],
-  'grey' : [90, 39],
-  'black' : [30, 39],
-  'blue' : [34, 39],
-  'cyan' : [36, 39],
-  'green' : [32, 39],
-  'magenta' : [35, 39],
-  'red' : [31, 39],
-  'yellow' : [33, 39]
+  'bold': [1, 22],
+  'italic': [3, 23],
+  'underline': [4, 24],
+  'inverse': [7, 27],
+  'white': [37, 39],
+  'grey': [90, 39],
+  'black': [30, 39],
+  'blue': [34, 39],
+  'cyan': [36, 39],
+  'green': [32, 39],
+  'magenta': [35, 39],
+  'red': [31, 39],
+  'yellow': [33, 39]
 };
 
 // Don't use 'blue' not visible on cmd.exe
@@ -183,7 +183,7 @@ function stylizeWithColor(str, styleType) {
 
   if (style) {
     return '\u001b[' + inspect.colors[style][0] + 'm' + str +
-           '\u001b[' + inspect.colors[style][1] + 'm';
+      '\u001b[' + inspect.colors[style][1] + 'm';
   } else {
     return str;
   }
@@ -198,7 +198,7 @@ function stylizeNoColor(str, styleType) {
 function arrayToHash(array) {
   var hash = {};
 
-  array.forEach(function(val, idx) {
+  array.forEach(function (val, idx) {
     hash[val] = true;
   });
 
@@ -210,12 +210,12 @@ function formatValue(ctx, value, recurseTimes) {
   // Provide a hook for user-specified inspect functions.
   // Check that value is an object with an inspect function on it
   if (ctx.customInspect &&
-      value &&
-      isFunction(value.inspect) &&
-      // Filter out the util module, it's inspect function is special
-      value.inspect !== inspect &&
-      // Also filter out any prototype objects using the circular check.
-      !(value.constructor && value.constructor.prototype === value)) {
+    value &&
+    isFunction(value.inspect) &&
+    // Filter out the util module, it's inspect function is special
+    value.inspect !== inspect &&
+    // Also filter out any prototype objects using the circular check.
+    !(value.constructor && value.constructor.prototype === value)) {
     var ret = value.inspect(recurseTimes, ctx);
     if (!isString(ret)) {
       ret = formatValue(ctx, ret, recurseTimes);
@@ -240,7 +240,7 @@ function formatValue(ctx, value, recurseTimes) {
   // IE doesn't make error fields non-enumerable
   // http://msdn.microsoft.com/en-us/library/ie/dww52sbt(v=vs.94).aspx
   if (isError(value)
-      && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
+    && (keys.indexOf('message') >= 0 || keys.indexOf('description') >= 0)) {
     return formatError(value);
   }
 
@@ -308,7 +308,7 @@ function formatValue(ctx, value, recurseTimes) {
   if (array) {
     output = formatArray(ctx, value, recurseTimes, visibleKeys, keys);
   } else {
-    output = keys.map(function(key) {
+    output = keys.map(function (key) {
       return formatProperty(ctx, value, recurseTimes, visibleKeys, key, array);
     });
   }
@@ -324,8 +324,8 @@ function formatPrimitive(ctx, value) {
     return ctx.stylize('undefined', 'undefined');
   if (isString(value)) {
     var simple = '\'' + JSON.stringify(value).replace(/^"|"$/g, '')
-                                             .replace(/'/g, "\\'")
-                                             .replace(/\\"/g, '"') + '\'';
+      .replace(/'/g, "\\'")
+      .replace(/\\"/g, '"') + '\'';
     return ctx.stylize(simple, 'string');
   }
   if (isNumber(value))
@@ -361,6 +361,17 @@ function formatArray(ctx, value, recurseTimes, visibleKeys, keys) {
   });
   return output;
 }
+
+var getOwnPropertyDescriptors = Object.getOwnPropertyDescriptors ||
+  function getOwnPropertyDescriptors(obj) {
+    var keys = Object.keys(obj);
+    var descriptors = {};
+    for (var i = 0; i < keys.length; i++) {
+      descriptors[keys[i]] = Object.getOwnPropertyDescriptor(obj, keys[i]);
+    }
+    return descriptors;
+  };
+
 
 
 function formatProperty(ctx, value, recurseTimes, visibleKeys, key, array) {
@@ -443,6 +454,67 @@ function reduceToSingleString(output, base, braces) {
 }
 
 
+var kCustomPromisifiedSymbol = typeof Symbol !== 'undefined' ? Symbol('util.promisify.custom') : undefined;
+
+function promisify(original) {
+  // Lazy-load to avoid a circular dependency.
+  if (typeof original !== 'function')
+    throw new TypeError('The "original" argument must be of type Function');
+
+  if (kCustomPromisifiedSymbol && original[kCustomPromisifiedSymbol]) {
+    var fn = original[kCustomPromisifiedSymbol];
+    if (typeof fn !== 'function') {
+      throw new TypeError('The "util.promisify.custom" argument must be of type Function');
+    }
+    Object.defineProperty(fn, kCustomPromisifiedSymbol, {
+      value: fn, enumerable: false, writable: false, configurable: true
+    });
+    return fn;
+  }
+
+  // Names to create an object from in case the callback receives multiple
+  // arguments, e.g. ['bytesRead', 'buffer'] for fs.read.
+  function fn() {
+    var promiseResolve, promiseReject;
+    var promise = new Promise(function (resolve, reject) {
+      promiseResolve = resolve;
+      promiseReject = reject;
+    });
+
+    var args = [];
+    for (var i = 0; i < arguments.length; i++) {
+      args.push(arguments[i]);
+    }
+    args.push(function (err, value) {
+      if (err) {
+        promiseReject(err);
+      } else {
+        promiseResolve(value);
+      }
+    });
+
+    try {
+      original.apply(this, args);
+    } catch (err) {
+      promiseReject(err);
+    }
+
+    return promise;
+  }
+
+  Object.setPrototypeOf(fn, Object.getPrototypeOf(original));
+
+  if (kCustomPromisifiedSymbol) Object.defineProperty(fn, kCustomPromisifiedSymbol, {
+    value: fn, enumerable: false, writable: false, configurable: true
+  });
+  return Object.defineProperties(
+    fn,
+    getOwnPropertyDescriptors(original)
+  );
+}
+
+promisify.custom = kCustomPromisifiedSymbol
+
 // NOTE: These type checking functions intentionally don't use `instanceof`
 // because it is fragile and can be easily faked with `Object.create()`.
 export function isArray(ar) {
@@ -491,7 +563,7 @@ export function isDate(d) {
 
 export function isError(e) {
   return isObject(e) &&
-      (objectToString(e) === '[object Error]' || e instanceof Error);
+    (objectToString(e) === '[object Error]' || e instanceof Error);
 }
 
 export function isFunction(arg) {
@@ -500,11 +572,11 @@ export function isFunction(arg) {
 
 export function isPrimitive(arg) {
   return arg === null ||
-         typeof arg === 'boolean' ||
-         typeof arg === 'number' ||
-         typeof arg === 'string' ||
-         typeof arg === 'symbol' ||  // ES6 symbol
-         typeof arg === 'undefined';
+    typeof arg === 'boolean' ||
+    typeof arg === 'number' ||
+    typeof arg === 'string' ||
+    typeof arg === 'symbol' ||  // ES6 symbol
+    typeof arg === 'undefined';
 }
 
 export function isBuffer(maybeBuf) {
@@ -522,14 +594,14 @@ function pad(n) {
 
 
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-              'Oct', 'Nov', 'Dec'];
+  'Oct', 'Nov', 'Dec'];
 
 // 26 Feb 16:19:34
 function timestamp() {
   var d = new Date();
   var time = [pad(d.getHours()),
-              pad(d.getMinutes()),
-              pad(d.getSeconds())].join(':');
+  pad(d.getMinutes()),
+  pad(d.getSeconds())].join(':');
   return [d.getDate(), months[d.getMonth()], time].join(' ');
 }
 
@@ -554,7 +626,7 @@ export function log() {
  * @param {function} superCtor Constructor function to inherit prototype from.
  */
 import inherits from './inherits';
-export {inherits}
+export { inherits }
 
 export function _extend(origin, add) {
   // Don't do anything if add isn't an object
@@ -594,5 +666,6 @@ export default {
   inspect: inspect,
   deprecate: deprecate,
   format: format,
-  debuglog: debuglog
+  debuglog: debuglog,
+  promisify: promisify
 }

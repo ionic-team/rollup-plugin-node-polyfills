@@ -13,6 +13,7 @@ const files = [
   'constants.js',
   'os.js',
   'path.js',
+  'path-parse.js',
   'string-decoder.js',
   'zlib.js',
   'domain.js',

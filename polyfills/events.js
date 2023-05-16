@@ -11,8 +11,29 @@ EventHandlers.prototype = Object.create(null);
 function EventEmitter() {
   EventEmitter.init.call(this);
 }
+
+function setMaxListeners(n, ...eventTargets) {
+  if (typeof n !== 'number' || n < 0 || isNaN(n))
+    throw new TypeError('"n" argument must be a positive number');
+
+  if (eventTargets.length === 0) {
+    EventEmitter.defaultMaxListeners = n;
+  } else {
+    for (let i = 0; i < eventTargets.length; i++) {
+      const target = eventTargets[i];
+      if (typeof target.setMaxListeners === 'function') {
+        target.setMaxListeners(n);
+      } else {
+        throw new TypeError('"eventTargets" must be instances of "EventEmitter"');
+      }
+    }
+  }
+}
+
+EventEmitter.setMaxListeners = setMaxListeners
+
 export default EventEmitter;
-export {EventEmitter};
+export {EventEmitter, setMaxListeners};
 
 // nodejs oddity
 // require('events') === require('events').EventEmitter
